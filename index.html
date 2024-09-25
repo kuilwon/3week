@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>030515</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: black;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        .circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+        }
+
+        .circle1 {
+            background-color: #FFF145;
+            left: 10vw;
+            top: 20vh;
+        }
+
+        .circle2 {
+            background-color: #F2B279;
+            left: 45vw;
+            top: 30vh;
+        }
+
+        .circle3 {
+            background-color: #48C7FF;
+            left: 80vw;
+            top: 50vh;
+        }
+
+        .circle4 {
+            background-color: #899DEF;
+            left: 30vw;
+            top: 70vh;
+        }
+
+        .background-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: opacity 1.5s ease-in-out;
+            opacity: 0;
+            z-index: -1;
+        }
+
+        .text {
+            position: absolute;
+            color: white;
+            font-size: 15pt;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: bold;
+            z-index: 1;
+            opacity: 0; /* 텍스트는 초기에는 보이지 않음 */
+            pointer-events: none;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .text1 {
+            top: 2vh;
+            left: 10vw;
+        }
+
+        .text2 {
+            top: 40vh;
+            left: 45vw;
+        }
+
+        .text3 {
+            top: 60vh;
+            left: 80vw;
+        }
+
+        .text4 {
+            top: 80vh;
+            left: 30vw;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 원 -->
+    <div class="circle circle1" onclick="changeBackgroundWithFade('image1.jpg', 'text1')"></div>
+    <div class="circle circle2" onclick="changeBackgroundWithFade('image2.jpg', 'text2')"></div>
+    <div class="circle circle3" onclick="changeBackgroundWithFade('image3.jpg', 'text3')"></div>
+    <div class="circle circle4" onclick="changeBackgroundWithFade('image4.jpg', 'text4')"></div>
+
+    <!-- 배경 레이어 -->
+    <div class="background-layer" id="backgroundLayer"></div>
+
+    <!-- 텍스트 -->
+    <div class="text text1" id="text1">태어나자마자 머리를 밀렸다.<br>
+    우리나라에는 갓난 아기의 머리털이 힘이 없고, 잘 자라지 않을 때<br>
+    머리를 밀면 새롭고 강한 머리털을 얻는다고 믿었다.<br>
+    근데 우리 부모님은 새로운 머리카락이 마음에 안 들었는, 2살 무렵 나는 다시 머리가 밀려버렸다.<br>2년 동안의 머리카락은 떠나 버렸다.</div>
+    <div class="text text2" id="text2">나는 남들보다 울음이 없었다.<br>어린 아이는 낯선 곳을 가면 울기 마련인데, 나는 울지도 않고 얌전했다고 한다.<br>육아 난이도가 낮은 편.<br>역설적이게도 나이를 먹으면서 육아 난이도가 올라갔다.</div>
+    <div class="text text3" id="text3">우리 엄마는 공주님 스타일을 좋아한다.<br>그래서 그런지 어렸을 때 옷들의 색은 모두 핑크색.<br>치마도 엄청 자주 입었다.<br>나도 공주님 옷을 입은 내가 좋았다.<br>하지만 웃기게도 그 모습은 초등학교에 입학하자마자 사라졌다.<br>현재의 자아가 생기기 시작한 시점이다.</div>
+    <div class="text text4" id="text4">어릴 적부터 친가에서 못생겼다는 말을 듣고 자랐다.<br>태어날 때부터, 어린이 때까지.<br>남아선호인 친가 사람들은 외모도 멋진 오빠만 좋아했다.<br>신기하게도 친가에서 가장 연장자인 할아버지만은 나를 가장 사랑했다.<br>나의 숨통은 할아버지였다.</div>
+
+    <!-- 오디오 -->
+    <audio id="audio" src="song1.mp3"></audio>
+
+    <script>
+        let firstClick = true;  // 첫 번째 클릭인지 확인하는 플래그
+
+        function changeBackgroundWithFade(image, textId) {
+            const backgroundLayer = document.getElementById('backgroundLayer');
+            const texts = document.querySelectorAll('.text'); // 모든 텍스트 가져오기
+
+            // 기존 이미지와 텍스트 투명도를 0으로 설정하여 서서히 사라짐
+            backgroundLayer.style.opacity = '0';
+            texts.forEach(text => text.style.opacity = '0');
+
+            // 2초 후 새로운 배경 이미지와 해당 텍스트가 서서히 나타나도록 설정
+            setTimeout(function() {
+                backgroundLayer.style.backgroundImage = `url('${image}')`;
+                backgroundLayer.style.opacity = '1'; // 2초 동안 서서히 나타나도록
+
+                // 클릭된 텍스트만 서서히 나타나도록 설정
+                const textElement = document.getElementById(textId);
+                textElement.style.opacity = '1';
+            }, 2000); // 2초 후 새로운 이미지와 텍스트 설정
+
+            // 첫 번째 클릭에만 mp3 재생
+            if (firstClick) {
+                const audio = document.getElementById('audio');
+                audio.play();
+                firstClick = false; // 이후 클릭에서는 mp3가 재생되지 않도록 설정
+            }
+        }
+    </script>
+
+</body>
+</html>
